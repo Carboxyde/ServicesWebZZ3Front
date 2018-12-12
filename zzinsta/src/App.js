@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Compo2 from './components/Compo2.jsx';
+import Login from './components/Login.jsx';
 
 class App extends Component {
   render() {
@@ -17,8 +19,11 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
+          
             Learn React
           </a>
+      <Compo2/>
+      <Login></Login>
         </header>
       </div>
     );
