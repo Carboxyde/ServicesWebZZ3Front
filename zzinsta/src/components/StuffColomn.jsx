@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import PropTypes from 'prop-types';
 import StuffBox from "./StuffBox";
 import {Container, Row} from 'reactstrap';
+import 'react-bootstrap/lib/utils/divWithClassName'
 
 export default class StuffColomn extends Component{
   constructor(props){

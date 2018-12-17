@@ -21,12 +21,14 @@ class App extends Component {
             rel="noopener noreferrer"
           >
 
+
             Learn React
           </a>
       <Compo2/>
-      <Login></Login>
+      <Login />
         </header>
         <StuffColomn />
+      </div>
     );
   }
 }
