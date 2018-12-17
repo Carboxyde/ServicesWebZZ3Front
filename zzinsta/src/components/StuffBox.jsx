@@ -5,7 +5,7 @@ import ImageDefault from "../pics/1267937.jpg"
 export default class StuffBox extends Component{
     static defaultProps ={
     imagePath: ImageDefault,
-    cardTest: "Nunquam demitto gemna.Pius era inciviliter falleres adiurator est.Eheu, fluctus!Valebats experimentum in " +
+    cardText: "Nunquam demitto gemna.Pius era inciviliter falleres adiurator est.Eheu, fluctus!Valebats experimentum in " +
       "audax vierium!Fidelis fortis acceleratrix captiss pes est.Est azureus compater, cesaris. The psychic result of courage is to forget with thought."
   }
 
