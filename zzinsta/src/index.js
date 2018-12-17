@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import Compo2 from './components/Compo2.jsx';
 import * as serviceWorker from './serviceWorker';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
