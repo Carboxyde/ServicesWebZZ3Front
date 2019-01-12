@@ -45,7 +45,7 @@ export default class LoginInput extends React.Component {
     }
     checkPassword(login, pwd){
         let result=false;
-        if (login=="admin" && pwd=="Password1"){
+        if (login==="admin" && pwd==="Password1"){
             result = true
         }
         return result;
@@ -56,32 +56,34 @@ export default class LoginInput extends React.Component {
         return <div>
                 <form >
                     <table>
-                        <tr>
-                            <td colspan="2">
-                                <p class="errorMsg">{this.state.error}</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p> Login : </p>
-                            </td>
-                            <td>
-                                <input onChange={this.changeLogin} type="text" value={this.state.login}/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p> Mot de passe : </p>
-                            </td>
-                            <td>
-                                <input onChange={this.changePassword} type="password" value={this.state.pwd}/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <button onClick={this.handleClick}>Valider</button>
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td colSpan="2">
+                                    <p className="errorMsg">{this.state.error}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p> Login : </p>
+                                </td>
+                                <td>
+                                    <input onChange={this.changeLogin} type="text" value={this.state.login}/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p> Mot de passe : </p>
+                                </td>
+                                <td>
+                                    <input onChange={this.changePassword} type="password" value={this.state.pwd}/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colSpan="2">
+                                    <button onClick={this.handleClick}>Valider</button>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </form>
             </div>;

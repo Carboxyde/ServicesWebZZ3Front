@@ -10,18 +10,15 @@ export default class StuffBox extends Component{
   }
 
   static propTypes = {
-    imagePath:  PropTypes.any.IsRequired ,
-    cardText:   PropTypes.string.IsRequired,
-  }
-
-  constructor(props){
-    super(props);
+    imagePath:  PropTypes.any.isRequired,
+    cardText:   PropTypes.string.isRequired,
+    title:      PropTypes.string.isRequired
   }
 
   render(){
     return <div className="col-md-4">
             <div className="card mb-4 shadow-sm">
-              <img className="card-img-top" src={this.props.imagePath} alt="Image StuffBox" />
+              <img className="card-img-top" src={this.props.imagePath} alt={this.props.title} />
               <div className="card-body">
                 <p className="card-text">{this.props.cardText}</p>
                 <div className="d-flex justify-content-between align-items-center">
