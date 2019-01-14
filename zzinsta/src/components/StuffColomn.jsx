@@ -15,9 +15,10 @@ state ={
   }
 
   componentDidMount(){
-    axios.get('http://localhost:5000/api/v1/posts')
+    axios.get('http://localhost:5000/posts')
     .then(res => {
-      const posts = res.data.posts;
+      const posts = res.data.app;
+      console.log(posts);
       this.setState({
           posts
       });
@@ -30,11 +31,9 @@ state ={
     <div className="album py-5 bg-light">
       <Container>
         <Row>
-          <div>
           {this.state.posts.map( post =>
-                <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post.id.toString()}/>
+                <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post._id.toString()}/>
                 )}
-          </div>
         </Row>
       </Container>
     </div>
