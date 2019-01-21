@@ -14,6 +14,7 @@ export default class LoginInput extends React.Component {
             pwd:'',
             connect:false,
             error:'',
+            file:''
         };
         this.handleClick = this.handleClick.bind(this);
         this.changeLogin = this.changeLogin.bind(this);
@@ -77,6 +78,7 @@ export default class LoginInput extends React.Component {
                                 <td>
                                     <input onChange={this.changePassword} type="password" value={this.state.pwd}/>
                                 </td>
+                                <input  onChange={this.changePassword} type="file" name="img" />
                             </tr>
                             <tr>
                                 <td colSpan="2">
