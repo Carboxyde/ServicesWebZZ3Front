@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 import './Login.css';
 
 export default class LoginInput extends React.Component {
@@ -12,13 +13,15 @@ export default class LoginInput extends React.Component {
         this.state =  {
             login:'',
             pwd:'',
-            connect:false,
+            connect:localStorage.getItem("token")!=null,
             error:'',
             file:''
         };
         this.handleClick = this.handleClick.bind(this);
         this.changeLogin = this.changeLogin.bind(this);
         this.changePassword = this.changePassword.bind(this);
+        this.disconnect = this.disconnect.bind(this);
+
     }
     
     changeLogin(event){
@@ -33,9 +36,9 @@ export default class LoginInput extends React.Component {
             pwd: val
         }));
     }
-    handleClick(event){
+    async handleClick(event){
         event.preventDefault();
-        if (this.checkPassword(this.state.login, this.state.pwd))
+        if (await this.checkPassword(this.state.login, this.state.pwd))
             this.setState(state => ({
                 connect:true
             }));
@@ -44,53 +47,66 @@ export default class LoginInput extends React.Component {
                 error:"Votre identifiant ou mot de passe est incorrect"
             }));
     }
-    checkPassword(login, pwd){
+
+    async disconnect(event){
+        localStorage.removeItem("token");
+        this.setState(state => ({
+            connect:false
+        }));
+    }
+
+    async checkPassword(login, pwd){
         let result=false;
-        if (login==="admin" && pwd==="Password1"){
-            result = true
-        }
+
+        try {
+            let res = await axios.post("http://localhost:5000/login", {
+                "username": login,
+                "password": pwd
+            });
+            console.log(res);
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("Username", login);
+
+            if (res.data.success){
+                result = true
+            }
+
+          } catch (err) {
+            console.error(err);
+          }
+
         return result;
     }
 
     render() {
         if (!this.state.connect)
-        return <div>
-                <form >
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td colSpan="2">
-                                    <p className="errorMsg">{this.state.error}</p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p> Login : </p>
-                                </td>
-                                <td>
-                                    <input onChange={this.changeLogin} type="text" value={this.state.login}/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p> Mot de passe : </p>
-                                </td>
-                                <td>
-                                    <input onChange={this.changePassword} type="password" value={this.state.pwd}/>
-                                </td>
-                                <input  onChange={this.changePassword} type="file" name="img" />
-                            </tr>
-                            <tr>
-                                <td colSpan="2">
-                                    <button onClick={this.handleClick}>Valider</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-            </div>;
+            return  <form
+                        style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        maxWidth: "80vw",
+                        margin: "auto",
+                        marginTop: "20px"
+                        }}
+                        >
+                        <input onChange={this.changeLogin} type="text" placeholder="Mail de l'utilisateur" value={this.state.login}/>
+                        <input onChange={this.changePassword} type="password" placeholder="Mot de passe" value={this.state.pwd}/>
+                        <button onClick={this.handleClick}>Se connecter</button>
+                    </form>; 
         else
-            return <div> Vous êtes connecté</div>
+            return <div
+            style={{
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "80vw",
+            margin: "auto",
+            marginTop: "20px"
+            }}
+            > 
+            <p>{this.state.login}</p>
+            <p>Vous êtes connecté</p>
+            <button onClick={this.disconnect}>Se déconnecter</button>
+            </div>
         
     }
 }

@@ -50,10 +50,6 @@ changeFile(event){
 }
 upload(event){
   if (this.state.img!=null){
-    var formData = new FormData();
-    formData.append("title", this.state.title);
-    formData.append("description", this.state.cardText);
-    formData.append("file", this.state.file);
     axios.post('http://localhost:5000/posts', {
       "title": this.state.title,
       "description": this.state.cardText,

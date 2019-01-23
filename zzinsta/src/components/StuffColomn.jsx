@@ -14,8 +14,11 @@ state ={
   constructor(props){
     super(props);
   }
+  
 
   componentDidMount(){
+    this.loadPosts();
+/*
     axios.get('http://localhost:5000/posts')
     .then(res => {
       const posts = res.data.app;
@@ -24,8 +27,30 @@ state ={
           posts
       });
     })   
+    */
   }
-  
+
+  async loadPosts(){
+    try {
+      const access_token = localStorage.getItem("token");
+      if (access_token!=null) {
+      const options = {
+        method: "get",
+        headers: {
+          Authorization: access_token,
+          "Content-Type": "application/json"
+        },
+        url: "http://localhost:5000/posts"
+      };
+      let res = await axios(options);
+      this.setState({ posts: res.data.app });
+    }
+    } catch (err) {
+      alert("erreur");
+    }
+    
+
+  }
 
   render(){
    return(
