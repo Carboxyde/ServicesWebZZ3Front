@@ -49,13 +49,16 @@ changeFile(event){
   }
 }
 upload(event){
-  if (this.state.img!=null){
+  const access_token = localStorage.getItem("token");
+  if (this.state.img!=null && access_token!=null){
     axios.post('http://localhost:5000/posts', {
       "title": this.state.title,
       "description": this.state.cardText,
       "img": this.state.img
+
   }, {
         headers: {
+          Authorization: access_token,
           'content-type': 'application/json',
           'Content-Type': 'multipart/form-data'
         }

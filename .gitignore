@@ -1,2 +1,6 @@
 #Intelij Idea Files 
 .idea/
+
+*.code-workspace
+
+zzinsta/\.vscode/
