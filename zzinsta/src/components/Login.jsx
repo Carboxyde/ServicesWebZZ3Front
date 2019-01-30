@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios'
 import './Login.css';
 
 export default class LoginInput extends React.Component {
-    static defaultProps = {
-        login:'Login'
+
+    static propTypes = {
+        setConnect: PropTypes.func
     }
 
 
@@ -32,27 +34,30 @@ export default class LoginInput extends React.Component {
     }
     changePassword(event){
         let val = event.target.value
-        this.setState(state => ({
+        this.setState({
             pwd: val
-        }));
+        });
     }
     async handleClick(event){
         event.preventDefault();
-        if (await this.checkPassword(this.state.login, this.state.pwd))
-            this.setState(state => ({
+        if (await this.checkPassword(this.state.login, this.state.pwd)){
+            this.setState({
                 connect:true
-            }));
+            });            
+            this.props.setConnect(true)
+        }
         else
-            this.setState(state => ({
+            this.setState({
                 error:"Votre identifiant ou mot de passe est incorrect"
-            }));
+            });
     }
 
     async disconnect(event){
         localStorage.removeItem("token");
-        this.setState(state => ({
+        this.setState({
             connect:false
-        }));
+        });
+        this.props.setConnect(false);
     }
 
     async checkPassword(login, pwd){

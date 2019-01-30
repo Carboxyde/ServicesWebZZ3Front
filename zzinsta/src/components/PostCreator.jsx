@@ -55,7 +55,6 @@ upload(event){
       "title": this.state.title,
       "description": this.state.cardText,
       "img": this.state.img
-
   }, {
         headers: {
           Authorization: access_token,
