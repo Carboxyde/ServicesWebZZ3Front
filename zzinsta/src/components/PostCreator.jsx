@@ -54,7 +54,8 @@ upload(event){
     axios.post('http://localhost:5000/posts', {
       "title": this.state.title,
       "description": this.state.cardText,
-      "img": this.state.img
+      "img": this.state.img,
+      "user": access_token.user
   }, {
         headers: {
           Authorization: access_token,
