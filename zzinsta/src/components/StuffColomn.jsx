@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import PropTypes from 'prop-types';
 import StuffBox from "./StuffBox";
-import PostCreator from "./PostCreator";
 import {Container, Row} from 'reactstrap';
 import 'react-bootstrap/lib/utils/divWithClassName'
 import axios from 'axios'
@@ -40,7 +38,11 @@ state ={
           Authorization: access_token,
           "Content-Type": "application/json"
         },
-        url: "http://localhost:5000/posts"
+        url: "http://localhost:5000/posts",
+        dat:{},
+        params: {
+          per_page: 20
+        }
       };
       let res = await axios(options);
       this.setState({ posts: res.data.app });
@@ -57,9 +59,8 @@ state ={
     <div className="album py-5 bg-light">
       <Container>
         <Row>
-          <PostCreator />
           {this.state.posts.map( post =>
-                <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post._id.toString()}/>
+                <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post._id.toString()} isOwner={true}/>
                 )}
         </Row>
       </Container>

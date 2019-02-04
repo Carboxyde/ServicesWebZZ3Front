@@ -4,6 +4,7 @@ import ImageDefault from "../pics/1267937.jpg"
 
 export default class StuffBox extends Component{
     static defaultProps ={
+      title:"Hello World",
     imagePath: ImageDefault,
     cardText: "Nunquam demitto gemna.Pius era inciviliter falleres adiurator est.Eheu, fluctus!Valebats experimentum in " +
       "audax vierium!Fidelis fortis acceleratrix captiss pes est.Est azureus compater, cesaris. The psychic result of courage is to forget with thought."
@@ -12,7 +13,8 @@ export default class StuffBox extends Component{
   static propTypes = {
     imagePath:  PropTypes.any.isRequired,
     cardText:   PropTypes.string.isRequired,
-    title:      PropTypes.string.isRequired
+    title:      PropTypes.string.isRequired,
+    isOwner:    PropTypes.bool
   }
 
   render(){
@@ -25,9 +27,10 @@ export default class StuffBox extends Component{
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="btn-group">
                     <button type="button" className="btn btn-sm btn-outline-secondary">J'apprécie</button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary">Partager</button>
                   </div>
-                  <small className="text-muted">9 mins</small>
+                  <div className="btn-group">
+                    <button type="button" className="btn btn-sm btn-danger" hidden={!this.props.isOwner}>Supprimer</button>
+                  </div>
                 </div>
               </div>
 

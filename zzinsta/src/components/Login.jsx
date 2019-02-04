@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import '../css/signin.css'
+import logo from '../pics/settings.png';
 import PropTypes from 'prop-types';
 import axios from 'axios'
-import './Login.css';
 
 export default class LoginInput extends React.Component {
 
@@ -85,32 +86,21 @@ export default class LoginInput extends React.Component {
 
     render() {
         if (!this.state.connect)
-            return  <form
-                        style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        maxWidth: "80vw",
-                        margin: "auto",
-                        marginTop: "20px"
-                        }}
-                        >
-                        <input onChange={this.changeLogin} type="text" placeholder="Mail de l'utilisateur" value={this.state.login}/>
-                        <input onChange={this.changePassword} type="password" placeholder="Mot de passe" value={this.state.pwd}/>
-                        <button onClick={this.handleClick}>Se connecter</button>
+            return  <form class="form-signin">
+                        <img src={logo} className="App-logo" width="100%" alt="logo" />
+                        <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"/>
+                        <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
+                        <label for="inputEmail" class="sr-only">Adresse mail</label>
+                        <input onChange={this.changeLogin} type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus/>
+                        <label for="inputPassword" class="sr-only">Mot de passe</label>
+                        <input onChange={this.changePassword} type="password" id="inputPassword" class="form-control" placeholder="Password" required/>
+                        <button onClick={this.handleClick} class="btn btn-lg btn-primary btn-block" >Se connecter</button>
                     </form>; 
         else
-            return <div
-            style={{
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: "80vw",
-            margin: "auto",
-            marginTop: "20px"
-            }}
-            > 
+            return <div> 
             <p>{this.state.login}</p>
             <p>Vous êtes connecté</p>
-            <button onClick={this.disconnect}>Se déconnecter</button>
+            <button class="btn" onClick={this.disconnect}>Se déconnecter</button>
             </div>
         
     }
