@@ -6,7 +6,7 @@ import axios from 'axios'
 //https://dev.to/greduan/the-anatomy-of-a-custom-inputtypefile-component
 function generatePreviewImgUrl(file, callback) {
   const reader = new FileReader()
-  const url = reader.readAsDataURL(file)
+  //const url = reader.readAsDataURL(file)
   reader.onloadend = e => callback(reader.result)
 }
 
