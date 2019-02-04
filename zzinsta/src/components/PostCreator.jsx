@@ -6,7 +6,7 @@ import axios from 'axios'
 //https://dev.to/greduan/the-anatomy-of-a-custom-inputtypefile-component
 function generatePreviewImgUrl(file, callback) {
   const reader = new FileReader()
-  //const url = reader.readAsDataURL(file)
+  const url = reader.readAsDataURL(file)
   reader.onloadend = e => callback(reader.result)
 }
 
@@ -48,20 +48,34 @@ changeFile(event){
     })
   }
 }
-upload(event){
+async upload(event){
   const access_token = localStorage.getItem("token");
   if (this.state.img!=null && access_token!=null){
-    axios.post('http://localhost:5000/posts', {
-      "title": this.state.title,
-      "description": this.state.cardText,
-      "img": this.state.img
-  }, {
-        headers: {
-          Authorization: access_token,
-          'content-type': 'application/json',
-          'Content-Type': 'multipart/form-data'
-        }
-    });
+    
+    try {
+      let res = await axios.post('http://localhost:5000/posts', {
+        "title": this.state.title,
+        "description": this.state.cardText,
+        "img": this.state.img
+      }, {
+          headers: {
+            Authorization: access_token,
+            'content-type': 'application/json',
+            'Content-Type': 'multipart/form-data'
+          }
+      });
+      console.log(res);
+      if (res.status=200){
+        this.setState(state => ({
+          img:null,
+          cardText: '',
+          title: ''
+        }));
+      }
+        
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 
@@ -73,22 +87,30 @@ upload(event){
       position: 'absolute',
       pointerEvents: 'none',
     };
-    return <div className="col-md-4">
-            <div className="card mb-4 shadow-sm">
-              <h2><input type="text" onChange={this.changeTitle} value={this.state.title}/></h2>
-              <img className="card-img-top" src={this.state.img==null?ImageDefault:this.state.img} alt={this.state.title} />
-              <div className="card-body">
-                <input className="card-text" type="textarea" onChange={this.changeDesc} value={this.state.cardText}/>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="btn-group">
-                    <button type="button" onClick={this.upload} className="btn btn-sm btn-outline-secondary" >Poster</button>
-                    <button type="button" className="btn btn-sm btn-outline-secondary"><label htmlFor="PostUploadBox">Changer l'image</label></button>
-                    <input type="file" onChange={this.changeFile} className="btn btn-sm btn-outline-secondary" id="PostUploadBox" style={fileStyle}/>
-                  </div>
-                </div>
+    return <div class="container">
+    	<div class="row">
+        <div class="col-md-6">
+                    <img className="card-img-top" src={this.state.img==null?ImageDefault:this.state.img} alt={this.state.title} />
+        </div>
+        <div class="col-md-6">
+          <form>
+            <h1 class="jumbotron-heading">Créer un post</h1>
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Titre du post</label>
+                <input onChange={this.changeTitle} type="text" class="form-control" id="exampleFormControlInput1" placeholder="Votre titre" value={this.state.title}/>
               </div>
-
-              </div>
-            </div>
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Texte du post</label>
+                      <textarea onChange={this.changeDesc} class="form-control" id="exampleFormControlTextarea1" rows="3" value={this.state.cardText}></textarea>
+                    </div>
+                    <p>
+                <label htmlFor="PostUploadBox" class="btn btn-primary my-2">Changer l'image</label>
+                <input type="file" onChange={this.changeFile} className="btn btn-sm btn-outline-secondary" id="PostUploadBox" style={fileStyle}/>
+                <a onClick={this.upload} class="btn btn-secondary my-2">Poster</a>
+            </p>
+            </form>
+        </div>
+	    </div>
+      </div>
   }
 }

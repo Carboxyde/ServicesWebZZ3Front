@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import PropTypes from 'prop-types';
 import StuffBox from "./StuffBox";
-import PostCreator from "./PostCreator";
 import {Container, Row} from 'reactstrap';
 import 'react-bootstrap/lib/utils/divWithClassName'
 import axios from 'axios'
@@ -57,7 +55,6 @@ state ={
     <div className="album py-5 bg-light">
       <Container>
         <Row>
-          <PostCreator />
           {this.state.posts.map( post =>
                 <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post._id.toString()}/>
                 )}
