@@ -38,7 +38,11 @@ state ={
           Authorization: access_token,
           "Content-Type": "application/json"
         },
-        url: "http://localhost:5000/posts"
+        url: "http://localhost:5000/posts",
+        dat:{},
+        params: {
+          per_page: 20
+        }
       };
       let res = await axios(options);
       this.setState({ posts: res.data.app });
@@ -56,7 +60,7 @@ state ={
       <Container>
         <Row>
           {this.state.posts.map( post =>
-                <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post._id.toString()}/>
+                <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post._id.toString()} isOwner={true}/>
                 )}
         </Row>
       </Container>

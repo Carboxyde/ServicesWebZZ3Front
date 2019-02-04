@@ -97,18 +97,10 @@ export default class LoginInput extends React.Component {
                         <button onClick={this.handleClick} class="btn btn-lg btn-primary btn-block" >Se connecter</button>
                     </form>; 
         else
-            return <div
-            style={{
-            display: "flex",
-            flexDirection: "column",
-            maxWidth: "80vw",
-            margin: "auto",
-            marginTop: "20px"
-            }}
-            > 
+            return <div> 
             <p>{this.state.login}</p>
             <p>Vous êtes connecté</p>
-            <button onClick={this.disconnect}>Se déconnecter</button>
+            <button class="btn" onClick={this.disconnect}>Se déconnecter</button>
             </div>
         
     }
