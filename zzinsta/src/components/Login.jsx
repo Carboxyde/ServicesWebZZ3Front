@@ -89,7 +89,6 @@ export default class LoginInput extends React.Component {
         if (!this.state.connect)
             return  <form class="form-signin">
                         <img src={logo} className="App-logo" width="100%" alt="logo" />
-                        <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72"/>
                         <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
                         <label for="inputEmail" class="sr-only">Adresse mail</label>
                         <input onChange={this.changeLogin} type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus/>
