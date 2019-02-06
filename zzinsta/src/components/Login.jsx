@@ -43,7 +43,8 @@ export default class LoginInput extends React.Component {
         event.preventDefault();
         if (await this.checkPassword(this.state.login, this.state.pwd)){
             this.setState({
-                connect:true
+                connect:true,
+                error:null
             });            
             this.props.setConnect(true)
         }
@@ -94,6 +95,9 @@ export default class LoginInput extends React.Component {
                         <input onChange={this.changeLogin} type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus/>
                         <label for="inputPassword" class="sr-only">Mot de passe</label>
                         <input onChange={this.changePassword} type="password" id="inputPassword" class="form-control" placeholder="Password" required/>
+                        <div class="alert alert-danger" hidden={this.state.error==""}>
+                            {this.state.error}
+                        </div>
                         <button onClick={this.handleClick} class="btn btn-lg btn-primary btn-block" >Se connecter</button>
                     </form>; 
         else
