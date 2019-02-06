@@ -67,7 +67,7 @@ export default class LoginInput extends React.Component {
 
         try {
             let res = await axios.post("http://localhost:5000/login", {
-                "username": login,
+                "mail": login,
                 "password": pwd
             });
             console.log(res);

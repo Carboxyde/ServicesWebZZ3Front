@@ -25,6 +25,7 @@ class Homepage extends Component {
 
   render() {
     const access_token = localStorage.getItem("token");
+    console.log(access_token);
     if (access_token!=null)
         return (
         <div className="Homepage">
