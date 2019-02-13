@@ -37,7 +37,6 @@ export default class StuffBox extends Component{
             headers: {
               Authorization: access_token,
               'content-type': 'application/json',
-              'Content-Type': 'multipart/form-data'
             }
         });
         console.log(res);

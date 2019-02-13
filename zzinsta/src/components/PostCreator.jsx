@@ -77,7 +77,6 @@ async upload(event){
             'Content-Type': 'multipart/form-data'
           }
       });
-      console.log(res);
       if (res.status=200){
         this.setState(state => ({
           img:null,
