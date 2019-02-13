@@ -62,13 +62,14 @@ async generatePicture(){
 
 async upload(event){
   const access_token = localStorage.getItem("token");
+  const userId = localStorage.getItem("UserId");
   if (this.state.img!=null && access_token!=null){
     try {
       let res = await axios.post('http://localhost:5000/posts', {
         "title": this.state.title,
         "description": this.state.cardText,
         "img": this.state.img,
-        "user": access_token.user
+        "user": userId,
       }, {
           headers: {
             Authorization: access_token,

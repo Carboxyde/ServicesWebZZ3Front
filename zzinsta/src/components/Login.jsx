@@ -14,16 +14,22 @@ export default class LoginInput extends React.Component {
     constructor(props){
         super(props);
         this.state =  {
+            mode:localStorage.getItem("token")==null ? 'login' : 'connected',
             login:'',
+            username:'',
             pwd:'',
-            connect:localStorage.getItem("token")!=null,
+            pwdBis:'',
             error:'',
             file:''
         };
-        this.handleClick = this.handleClick.bind(this);
+        this.clickLogin = this.clickLogin.bind(this);
+        this.clickRegister = this.clickRegister.bind(this);
         this.changeLogin = this.changeLogin.bind(this);
+        this.changeUsername = this.changeUsername.bind(this);
         this.changePassword = this.changePassword.bind(this);
+        this.changePasswordBis = this.changePasswordBis.bind(this);
         this.disconnect = this.disconnect.bind(this);
+        this.signUp = this.signUp.bind(this);
 
     }
     
@@ -33,17 +39,29 @@ export default class LoginInput extends React.Component {
             login: val
         }));
     }
+    changeUsername(event){
+        let val = event.target.value
+        this.setState(state => ({
+            username: val
+        }));
+    }
     changePassword(event){
         let val = event.target.value
         this.setState({
             pwd: val
         });
     }
-    async handleClick(event){
+    changePasswordBis(event){
+        let val = event.target.value
+        this.setState({
+            pwdBis: val
+        });
+    }
+    async clickLogin(event){
         event.preventDefault();
         if (await this.checkPassword(this.state.login, this.state.pwd)){
             this.setState({
-                connect:true,
+                mode:'connected',
                 error:null
             });            
             this.props.setConnect(true)
@@ -53,11 +71,50 @@ export default class LoginInput extends React.Component {
                 error:"Votre identifiant ou mot de passe est incorrect"
             });
     }
+    async clickRegister(event){
+        event.preventDefault();
+        if (this.state.login!='' && this.state.pwd!='' && this.state.pwd==this.state.pwdBis && this.state.username!=''){
+            try {
+                let res = await axios.post("http://localhost:5000/users", {
+                    "mail": this.state.login,
+                    "username": this.state.username,
+                    "password": this.state.pwd
+                });
+                console.log(res);
+    
+                if (res.data.success){
+                    this.setState({
+                        mode:'login',
+                        error:null
+                    });
+                }
+                else {
+                    this.setState({
+                        error:res.message
+                    });
 
+                }
+    
+              } catch (err) {
+                console.error(err);
+              }            
+            this.props.setConnect(true)
+        }
+        else
+            this.setState({
+                error:"Veuillez mieux renseigner les champs"
+            });
+    }
+
+    signUp(event){
+        this.setState(state => ({
+            mode: 'signup'
+        }));
+    }
     async disconnect(event){
         localStorage.removeItem("token");
         this.setState({
-            connect:false
+            mode:'login'
         });
         this.props.setConnect(false);
     }
@@ -67,15 +124,16 @@ export default class LoginInput extends React.Component {
 
         try {
             let res = await axios.post("http://localhost:5000/login", {
-                "username": login,
+                "mail": login,
                 "password": pwd
             });
             console.log(res);
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("Username", login);
 
             if (res.data.success){
                 result = true
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("Username", res.data.username); // TODO change to res username
+                localStorage.setItem("UserId", res.data.user);
             }
 
           } catch (err) {
@@ -86,25 +144,45 @@ export default class LoginInput extends React.Component {
     }
 
     render() {
-        if (!this.state.connect)
+        if (this.state.mode=='signup')
+            return <form class="form-signin">
+                <img src={logo} className="App-logo" width="100%" alt="logo" />
+                <h1 class="h3 mb-3 font-weight-normal">Veuillez vous inscrire</h1>
+                <label for="inputEmail" class="sr-only">Adresse mail</label>
+                <input onChange={this.changeLogin} type="email" id="inputEmail" class="form-control" placeholder="Adresse mail" required autofocus/>
+                <label for="inputUsername" class="sr-only">Nom d'utilisateur</label>
+                <input onChange={this.changeUsername} type="email" id="inputUsername" class="form-control" placeholder="Nom d'utilisateur" required/>
+                <label for="inputPassword" class="sr-only">Mot de passe</label>
+                <input onChange={this.changePassword} type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required/>
+                <label for="inputPasswordBis" class="sr-only">Confirmation du mot de passe</label>
+                <input onChange={this.changePasswordBis} type="password" id="inputPasswordBis" class="form-control" placeholder="Confirmation du mot de passe" required/>
+                <div class="alert alert-danger" hidden={this.state.error==""}>
+                    {this.state.error}
+                </div>
+                <button onClick={this.clickRegister} class="btn btn-lg btn-primary btn-block" >S'inscrire</button>
+            </form>;
+        else 
+        if (this.state.mode=='login')
             return  <form class="form-signin">
                         <img src={logo} className="App-logo" width="100%" alt="logo" />
                         <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
+                        <p class="h6 text-muted">ou vous <u onClick={this.signUp}>inscrire</u></p>
                         <label for="inputEmail" class="sr-only">Adresse mail</label>
-                        <input onChange={this.changeLogin} type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus/>
+                        <input onChange={this.changeLogin} type="email" id="inputEmail" class="form-control" placeholder="Adresse mail" required autofocus/>
                         <label for="inputPassword" class="sr-only">Mot de passe</label>
-                        <input onChange={this.changePassword} type="password" id="inputPassword" class="form-control" placeholder="Password" required/>
+                        <input onChange={this.changePassword} type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required/>
                         <div class="alert alert-danger" hidden={this.state.error==""}>
                             {this.state.error}
                         </div>
-                        <button onClick={this.handleClick} class="btn btn-lg btn-primary btn-block" >Se connecter</button>
+                        <button onClick={this.clickLogin} class="btn btn-lg btn-primary btn-block" >Se connecter</button>
                     </form>; 
         else
+        if (this.state.mode=='connected')
             return <div> 
             <p>{this.state.login}</p>
             <p>Vous êtes connecté</p>
             <button class="btn" onClick={this.disconnect}>Se déconnecter</button>
             </div>
-        
+        return <div></div>
     }
 }

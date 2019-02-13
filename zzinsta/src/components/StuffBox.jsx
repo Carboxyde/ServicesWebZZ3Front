@@ -1,8 +1,15 @@
 import React, {Component} from "react";
 import PropTypes from 'prop-types';
 import ImageDefault from "../pics/1267937.jpg"
+import axios from 'axios'
 
 export default class StuffBox extends Component{
+  
+  constructor(props){
+    super(props);
+    this.delete=this.delete.bind(this)
+  }
+
     static defaultProps ={
       title:"Hello World",
     imagePath: ImageDefault,
@@ -14,8 +21,36 @@ export default class StuffBox extends Component{
     imagePath:  PropTypes.any.isRequired,
     cardText:   PropTypes.string.isRequired,
     title:      PropTypes.string.isRequired,
-    isOwner:    PropTypes.bool
+    isOwner:    PropTypes.bool,
+    postId:     PropTypes.string.isRequired,
+    selfDestruct: PropTypes.func,
   }
+
+
+  async delete(event){
+    const access_token = localStorage.getItem("token");
+    if (access_token!=null){
+      try {
+        let res = await axios.post('http://localhost:5000/posts/delete', {
+          "postId": this.props.postId,
+        }, {
+            headers: {
+              Authorization: access_token,
+              'content-type': 'application/json',
+              'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log(res);
+        if (res.status=200){
+          this.props.selfDestruct(this.props.postId)
+        }
+          
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+  
 
   render(){
     return <div className="col-md-4">
@@ -29,7 +64,7 @@ export default class StuffBox extends Component{
                     <button type="button" className="btn btn-sm btn-outline-secondary">J'apprécie</button>
                   </div>
                   <div className="btn-group">
-                    <button type="button" className="btn btn-sm btn-danger" hidden={!this.props.isOwner}>Supprimer</button>
+                    <button type="button" className="btn btn-sm btn-danger" hidden={!this.props.isOwner} onClick={this.delete}>Supprimer</button>
                   </div>
                 </div>
               </div>
