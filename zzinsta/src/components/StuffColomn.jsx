@@ -11,27 +11,21 @@ state ={
 
   constructor(props){
     super(props);
+    this.removePost=this.removePost.bind(this)
   }
   
 
   componentDidMount(){
     this.loadPosts();
-/*
-    axios.get('http://localhost:5000/posts')
-    .then(res => {
-      const posts = res.data.app;
-      console.log(posts);
-      this.setState({
-          posts
-      });
-    })   
-    */
+    
   }
+
 
   async loadPosts(){
     try {
       const access_token = localStorage.getItem("token");
-      if (access_token!=null) {
+      const userId = localStorage.getItem("UserId");
+      if (access_token!=null && userId!=null) {
       const options = {
         method: "get",
         headers: {
@@ -50,17 +44,25 @@ state ={
     } catch (err) {
       alert("erreur");
     }
-    
-
   }
+  
+  removePost(postId) {
+    var array = [...this.state.posts]; // make a separate copy of the array
+    var index = array.findIndex(post => post._id == postId)
+    if (index !== -1) {
+      array.splice(index, 1);
+      this.setState({posts: array});
+    }
+}
 
   render(){
+    const userId = localStorage.getItem("UserId");
    return(
     <div className="album py-5 bg-light">
       <Container>
         <Row>
           {this.state.posts.map( post =>
-                <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post._id.toString()} isOwner={true}/>
+                <StuffBox imagePath={post.img} cardText={post.description} title={post.title} key={post._id} isOwner={userId==post.userId} postId={post._id} selfDestruct={this.removePost}/>
                 )}
         </Row>
       </Container>
