@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import StuffBox from "./StuffBox";
 import {Container, Row} from 'reactstrap';
 import 'react-bootstrap/lib/utils/divWithClassName'
-import axios from 'axios'
+import PostService from "./PostService";
 
 export default class StuffColomn extends Component{
 state ={
@@ -32,46 +32,13 @@ static propTypes = {
 
 
   async loadPosts(UserId){
-    console.log(UserId)
-    try {
-      const access_token = localStorage.getItem("token");
-      if (access_token!=null) {
-        let options;
-        if (UserId!=null)
-          options = {
-            method: "get",
-            headers: {
-              Authorization: access_token,
-              "Content-Type": "application/json"
-            },
-            url: "http://localhost:5000/posts/user",
-            data: {
-            },
-            params: {
-              per_page: 20,
-              userId: UserId,
-            }
-          };
-        else
-          options = {
-            method: "get",
-            headers: {
-              Authorization: access_token,
-              "Content-Type": "application/json"
-            },
-            url: "http://localhost:5000/posts",
-            data:{
-            },
-            params: {
-              per_page: 20
-            }
-          };
-      let res = await axios(options);
-      this.setState({ posts: res.data.app });
-    }
-    } catch (err) {
-      alert("erreur");
-    }
+    
+      let res = await PostService.loadPosts(UserId);
+      if (res!=false){
+        console.log(res)
+        this.setState({ posts: res });
+      }
+      
   }
   
   removePost(postId) {

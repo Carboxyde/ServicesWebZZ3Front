@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from 'prop-types';
 import ImageDefault from "../pics/1267937.jpg"
-import axios from 'axios'
+import PostService from "./PostService";
 
 export default class StuffBox extends Component{
   
@@ -28,26 +28,11 @@ export default class StuffBox extends Component{
 
 
   async delete(event){
-    const access_token = localStorage.getItem("token");
-    if (access_token!=null){
-      try {
-        let res = await axios.post('http://localhost:5000/posts/delete', {
-          "postId": this.props.postId,
-        }, {
-            headers: {
-              Authorization: access_token,
-              'content-type': 'application/json',
-            }
-        });
+        let res = await PostService.deletePost(this.props.postId);
         console.log(res);
-        if (res.status=200){
+        if (res==true){
           this.props.selfDestruct(this.props.postId)
         }
-          
-      } catch (err) {
-        console.error(err);
-      }
-    }
   }
   
 

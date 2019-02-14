@@ -60,7 +60,7 @@ class Homepage extends Component {
                 <main role="main">
 
                 <section class="jumbotron col-md-12 text-center">
-                    <PostCreator />
+                    <PostCreator updateMethod={this.GlobalMode.bind(this)}/>
                 </section>
 
                     <nav class="nav nav-pills nav-justified">
