@@ -1,7 +1,6 @@
 
 import axios from 'axios'
 
-require('dotenv').config({ path: '../../conf/.env' });
 
 
 export default class PostService {
