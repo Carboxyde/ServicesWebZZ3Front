@@ -8,13 +8,10 @@ export default class PostService {
 
     static async createPost(Post){
 
-        const BACK = "localhost";
-        const PORTBACK="5000";
-
         const access_token = localStorage.getItem("token");
         const userId = localStorage.getItem("UserId");
           try {
-              const url = 'http://'+BACK+':'+PORTBACK+'/posts';
+              const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/posts';
             let res = await axios.post(url, {
               "title": Post.title,
               "description": Post.description,
@@ -42,8 +39,6 @@ export default class PostService {
 
         
   static async loadPosts(UserId){
-    const BACK = "localhost";
-    const PORTBACK="5000";
 
     try {
         console.log(UserId)
@@ -51,7 +46,7 @@ export default class PostService {
       if (access_token!=null) {
         let options;
         if (UserId!=null){
-            const url = 'http://'+BACK+':'+PORTBACK+'/posts/user';            
+            const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/posts/user';            
           options = {
             method: "get",
             headers: {
@@ -68,7 +63,7 @@ export default class PostService {
           };
         }
         else{
-            const url = 'http://'+BACK+':'+PORTBACK+'/posts';
+            const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/posts';
           options = {
             method: "get",
             headers: {
@@ -94,13 +89,11 @@ export default class PostService {
   
 
   static async deletePost(postId){
-    const BACK = "localhost";
-    const PORTBACK="5000";
 
     const access_token = localStorage.getItem("token");
     if (access_token!=null){
       try {
-        const url = 'http://'+BACK+':'+PORTBACK+'/posts/delete';
+        const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/posts/delete';
         let res = await axios.post(url, {
           "postId": postId,
         }, {

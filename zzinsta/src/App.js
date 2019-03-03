@@ -3,7 +3,7 @@ import './App.css';
 import logo from './pics/settings.png';
 import Homepage from "./components/homepage";
 
-require('dotenv').config({ path: '../../conf/.env' });
+require('dotenv').config({ path: '/conf/.env' });
 
 class App extends Component {
   render() {

@@ -6,10 +6,8 @@ export default class UserService {
 
     
     static async loginUser(login, pwd){
-        const BACK = "localhost";
-        const PORTBACK="5000";
         try {
-            const url = 'http://'+BACK+':'+PORTBACK+'/login';
+            const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/login';
             let res = await axios.post(url, {
                 "mail": login,
                 "password": pwd
@@ -31,10 +29,8 @@ export default class UserService {
 
     
     static async registerUser(login, pwd, username){
-        const BACK = "localhost";
-        const PORTBACK="5000";
             try {
-                const url = 'http://'+BACK+':'+PORTBACK+'/users';
+                const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/users';
                 let res = await axios.post(url, {
                     "mail": login,
                     "username": username,
