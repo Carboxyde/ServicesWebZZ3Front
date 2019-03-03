@@ -34,8 +34,7 @@ static propTypes = {
   async loadPosts(UserId){
     
       let res = await PostService.loadPosts(UserId);
-      if (res!=false){
-        console.log(res)
+      if (res.length>=0 ){
         this.setState({ posts: res });
       }
       

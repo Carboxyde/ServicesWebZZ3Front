@@ -79,7 +79,7 @@ export default class LoginInput extends React.Component {
     async clickRegister(event){
         event.preventDefault();
         if (this.state.login!='' && this.state.pwd!='' && this.state.pwd==this.state.pwdBis && this.state.username!=''){
-                let res = UserService.registerUser(this.state.login, this.state.username, this.state.pwd);
+                let res = UserService.registerUser(this.state.login, this.state.pwd, this.state.username);
     
                 if (res==true){
                     this.setState({

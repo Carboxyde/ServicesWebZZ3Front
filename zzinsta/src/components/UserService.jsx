@@ -40,6 +40,7 @@ export default class UserService {
                     "username": username,
                     "password": pwd
                 });
+                console.log(res);
     
                 if (res.data.success){
                     return true;
