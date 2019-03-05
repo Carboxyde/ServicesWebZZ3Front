@@ -79,21 +79,19 @@ export default class LoginInput extends React.Component {
     async clickRegister(event){
         event.preventDefault();
         if (this.state.login!='' && this.state.pwd!='' && this.state.pwd==this.state.pwdBis && this.state.username!=''){
-                let res = UserService.registerUser(this.state.login, this.state.pwd, this.state.username);
-    
+                let res = await UserService.registerUser(this.state.login, this.state.pwd, this.state.username);
+                console.log(res)
                 if (res==true){
                     this.setState({
                         mode:'login',
-                        error:null
+                        error:''
                     });
                 }
                 else {
                     this.setState({
                         error:res
                     });
-
                 }         
-            this.props.setConnect(true)
         }
         else
             this.setState({
@@ -116,6 +114,9 @@ export default class LoginInput extends React.Component {
 
 
     render() {
+        var errorStyle = {
+            display : this.state.error==''?'none':'block'
+          };
         if (this.state.mode=='signup')
             return <form class="form-signin">
                 <img src={logo} className="App-logo" width="100%" alt="logo" />
@@ -128,7 +129,7 @@ export default class LoginInput extends React.Component {
                 <input onChange={this.changePassword} type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required/>
                 <label for="inputPasswordBis" class="sr-only">Confirmation du mot de passe</label>
                 <input onChange={this.changePasswordBis} type="password" id="inputPasswordBis" class="form-control" placeholder="Confirmation du mot de passe" required/>
-                <div class="alert alert-danger" hidden={this.state.error==""}>
+                <div class="alert alert-danger" style={errorStyle}>
                     {this.state.error}
                 </div>
                 <button onClick={this.clickRegister} class="btn btn-lg btn-primary btn-block" >S'inscrire</button>
@@ -143,7 +144,7 @@ export default class LoginInput extends React.Component {
                         <input onChange={this.changeLogin} type="email" id="inputEmail" class="form-control" placeholder="Adresse mail" required autofocus/>
                         <label for="inputPassword" class="sr-only">Mot de passe</label>
                         <input onChange={this.changePassword} type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required/>
-                        <div class="alert alert-danger" hidden={this.state.error==""}>
+                        <div class="alert alert-danger" style={errorStyle}>
                             {this.state.error}
                         </div>
                         <button onClick={this.clickLogin} class="btn btn-lg btn-primary btn-block" >Se connecter</button>

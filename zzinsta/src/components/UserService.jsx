@@ -8,12 +8,13 @@ export default class UserService {
     static async loginUser(login, pwd){
         try {
             const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/login';
+            console.log(url);
             let res = await axios.post(url, {
                 "mail": login,
                 "password": pwd
             });
 
-            if (res.data.success){
+            if (res.status=200){
                 return {
                     token:res.data.token,
                     username:res.data.username,
@@ -31,6 +32,7 @@ export default class UserService {
     static async registerUser(login, pwd, username){
             try {
                 const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/users';
+                console.log(url);
                 let res = await axios.post(url, {
                     "mail": login,
                     "username": username,
@@ -38,7 +40,7 @@ export default class UserService {
                 });
                 console.log(res);
     
-                if (res.data.success){
+                if (res.status=200){
                     return true;
                 }
                 else {
