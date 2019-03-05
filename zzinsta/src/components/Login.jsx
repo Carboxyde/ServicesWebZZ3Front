@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../css/signin.css'
 import logo from '../pics/settings.png';
 import PropTypes from 'prop-types';
-import axios from 'axios'
+import UserService from './UserService'
 
 export default class LoginInput extends React.Component {
 
@@ -59,7 +59,11 @@ export default class LoginInput extends React.Component {
     }
     async clickLogin(event){
         event.preventDefault();
-        if (await this.checkPassword(this.state.login, this.state.pwd)){
+        let res = await UserService.loginUser(this.state.login, this.state.pwd)
+        if (res.token!=null){
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("Username", res.username); // TODO change to res username
+            localStorage.setItem("UserId", res.userId);
             this.setState({
                 mode:'connected',
                 error:null
@@ -71,18 +75,13 @@ export default class LoginInput extends React.Component {
                 error:"Votre identifiant ou mot de passe est incorrect"
             });
     }
+    
     async clickRegister(event){
         event.preventDefault();
         if (this.state.login!='' && this.state.pwd!='' && this.state.pwd==this.state.pwdBis && this.state.username!=''){
-            try {
-                let res = await axios.post("http://localhost:5000/users", {
-                    "mail": this.state.login,
-                    "username": this.state.username,
-                    "password": this.state.pwd
-                });
-                console.log(res);
+                let res = UserService.registerUser(this.state.login, this.state.pwd, this.state.username);
     
-                if (res.data.success){
+                if (res==true){
                     this.setState({
                         mode:'login',
                         error:null
@@ -90,14 +89,10 @@ export default class LoginInput extends React.Component {
                 }
                 else {
                     this.setState({
-                        error:res.message
+                        error:res
                     });
 
-                }
-    
-              } catch (err) {
-                console.error(err);
-              }            
+                }         
             this.props.setConnect(true)
         }
         else
@@ -119,29 +114,6 @@ export default class LoginInput extends React.Component {
         this.props.setConnect(false);
     }
 
-    async checkPassword(login, pwd){
-        let result=false;
-
-        try {
-            let res = await axios.post("http://localhost:5000/login", {
-                "mail": login,
-                "password": pwd
-            });
-            console.log(res);
-
-            if (res.data.success){
-                result = true
-                localStorage.setItem("token", res.data.token);
-                localStorage.setItem("Username", res.data.username); // TODO change to res username
-                localStorage.setItem("UserId", res.data.user);
-            }
-
-          } catch (err) {
-            console.error(err);
-          }
-
-        return result;
-    }
 
     render() {
         if (this.state.mode=='signup')

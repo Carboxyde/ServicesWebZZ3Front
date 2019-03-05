@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import ImageDefault from "../pics/emptyPicture.png"
+import PropTypes from 'prop-types';
 import axios from 'axios'
+import PostService from "./PostService";
 
 
 //https://dev.to/greduan/the-anatomy-of-a-custom-inputtypefile-component
@@ -11,6 +13,10 @@ function generatePreviewImgUrl(file, callback) {
 }
 
 export default class StuffBox extends Component{
+
+  static propTypes = {
+    updateMethod: PropTypes.func,
+  }
 
 
   constructor(props){
@@ -61,34 +67,23 @@ async generatePicture(){
 
 
 async upload(event){
-  const access_token = localStorage.getItem("token");
-  const userId = localStorage.getItem("UserId");
-  if (this.state.img!=null && access_token!=null){
-    try {
-      let res = await axios.post('http://localhost:5000/posts', {
-        "title": this.state.title,
-        "description": this.state.cardText,
-        "img": this.state.img,
-        "user": userId,
-      }, {
-          headers: {
-            Authorization: access_token,
-            'content-type': 'application/json',
-            'Content-Type': 'multipart/form-data'
-          }
-      });
-      console.log(res);
-      if (res.status=200){
+  if (this.state.img!=null){
+    let post={
+      title: this.state.title,
+      description: this.state.cardText,
+      img: this.state.img,
+    }
+    
+      let res = await PostService.createPost(post)
+      
+      if (res==true){
         this.setState(state => ({
           img:null,
           cardText: '',
           title: ''
         }));
+        this.props.updateMethod();
       }
-        
-    } catch (err) {
-      console.error(err);
-    }
   }
 }
 
@@ -112,7 +107,6 @@ async upload(event){
 
 
         <div class="col-md-6">
-          <form>
             <h1 class="jumbotron-heading">Créer un post</h1>
               <div class="form-group">
                 <label for="exampleFormControlInput1">Titre du post</label>
@@ -133,7 +127,6 @@ async upload(event){
                     <button onClick={this.upload} class="btn btn-success my-2">Poster</button>
                   </div>
                 </div>
-            </form>
         </div>
 	    </div>
       </div>

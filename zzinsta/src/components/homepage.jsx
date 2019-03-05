@@ -11,9 +11,12 @@ class Homepage extends Component {
       const access_token = localStorage.getItem("token");
       const isConnected = access_token!=null
       this.state = {
-        connected:isConnected
+        connected:isConnected,
+        mode:'global',
       }
-      this.setConnect=this.setConnect.bind(this)
+      this.setConnect=this.setConnect.bind(this);
+      this.GlobalMode=this.GlobalMode.bind(this);
+      this.PersonalMode=this.PersonalMode.bind(this);
     }
 
     setConnect(isConnected) {
@@ -22,10 +25,21 @@ class Homepage extends Component {
         });
     }
 
+    GlobalMode(){
+        this.setState({
+            mode: 'global',
+        });
+    }
+
+    PersonalMode(){
+        this.setState({
+            mode: 'personal',
+        });
+    }
 
   render() {
     const access_token = localStorage.getItem("token");
-    console.log(access_token);
+    const userId = localStorage.getItem("UserId");
     if (access_token!=null)
         return (
         <div className="Homepage">
@@ -46,11 +60,14 @@ class Homepage extends Component {
                 <main role="main">
 
                 <section class="jumbotron col-md-12 text-center">
-                    <PostCreator />
+                    <PostCreator updateMethod={this.GlobalMode.bind(this)}/>
                 </section>
 
-                <StuffColomn />
-
+                    <nav class="nav nav-pills nav-justified">
+                        <a class={'nav-item nav-link'+(this.state.mode=='global'?' active':'')} onClick={this.GlobalMode}>Fil commun</a>
+                        <a class={'nav-item nav-link'+(this.state.mode=='personal'?' active':'')} onClick={this.PersonalMode}>Votre fil</a>
+                    </nav>
+                <StuffColomn UserId={this.state.mode=='personal'?userId:null}/>
                 </main>
 
                 <footer class="text-muted">
