@@ -12,7 +12,7 @@ export default class PostService {
         const userId = localStorage.getItem("UserId");
           try {
               const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/posts';
-            let res = await axios.post(url, {
+            let res = await axios.put(url, {
               "title": Post.title,
               "description": Post.description,
               "img": Post.img,
@@ -94,7 +94,7 @@ export default class PostService {
     if (access_token!=null){
       try {
         const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/posts/delete';
-        let res = await axios.post(url, {
+        let res = await axios.delete(url, {
           "postId": postId,
         }, {
             headers: {

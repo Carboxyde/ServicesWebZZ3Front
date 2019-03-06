@@ -31,7 +31,7 @@ export default class UserService {
     static async registerUser(login, pwd, username){
             try {
                 const url = 'http://'+process.env.REACT_APP_BACK+':'+process.env.REACT_APP_PORTBACK+'/users';
-                let res = await axios.post(url, {
+                let res = await axios.put(url, {
                     "mail": login,
                     "username": username,
                     "password": pwd
