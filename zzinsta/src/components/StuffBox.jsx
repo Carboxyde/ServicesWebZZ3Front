@@ -43,17 +43,20 @@ export default class StuffBox extends Component{
               <img className="card-img-top" src={this.props.imagePath} alt={this.props.title} />
               <div className="card-body">
                 <p className="card-text">{this.props.cardText}</p>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="btn-group">
-                    <button type="button" className="btn btn-sm btn-outline-secondary">J'apprécie</button>
-                  </div>
-                  <div className="btn-group">
-                    <button type="button" className="btn btn-sm btn-danger" hidden={!this.props.isOwner} onClick={this.delete}>Supprimer</button>
-                  </div>
-                </div>
+                <DeleteButton isOwner={this.props.isOwner} delete={this.delete}/>
               </div>
 
               </div>
             </div>
   }
+}
+
+function DeleteButton(props){
+  if (props.isOwner)
+    return <div className="d-flex justify-content-end align-items-center">
+            <div className="btn-group">
+              <button type="button" className="btn btn-sm btn-danger" onClick={props.delete}>Supprimer</button>
+            </div>
+          </div>
+  else return null;
 }
